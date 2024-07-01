@@ -1,1 +1,3 @@
-# PIZZA-STOR
+# PIZZA-STORE
+bootstrap
+css html js
