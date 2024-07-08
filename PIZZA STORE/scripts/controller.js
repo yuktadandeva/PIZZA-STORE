@@ -41,6 +41,7 @@ async function displayPizzas(){
 }
 
 function printPizzas(pizzas){
+    cartOperations.pizzas = pizzas;
     document.querySelector('#message').innerText = "";
     // let allHtml = '';
     for(let pizza of pizzas){
@@ -54,8 +55,36 @@ function printPizzas(pizzas){
 
 function addToCart(){
     const pizzaId = this.getAttribute('pizza-id');
+    cartOperations.addToCart(pizzaId);
     console.log(pizzaId);
     console.log("ADD TO CART");
+
+    printInCart();
+    
+}
+
+function printTotal(pizzas){
+
+    const total = pizzas.reduce((acc, pizza)=> acc + parseFloat(pizza.price),0).toFixed(2);
+    const totalPrice = document.createElement('p');
+    totalPrice.innerText = 'TOTAL BILL IS ' + total;
+    return totalPrice;
+
+}
+
+function printInCart(){
+    const pizzasInCart = cartOperations.viewAll();
+    document.getElementById('cart').innerHTML ='';
+    pizzasInCart.forEach(p => printCartItem(p));
+    document.getElementById('cart').appendChild(printTotal(pizzasInCart));
+}
+
+function printCartItem(pizzaInCart){
+    const pTag = document.createElement('p');
+    pTag.innerText = `${pizzaInCart.name} ${pizzaInCart.price}`;
+
+    const div = document.getElementById('cart');
+    div.appendChild(pTag);
 }
 
 function createPizzaCard(singlePizza){
@@ -72,7 +101,7 @@ function createPizzaCard(singlePizza){
 
     const divTag = document.createElement('div');
     divTag.className = 'card me-4';
-    divTag.style.width = '16rem';
+    divTag.style.width = '14rem';
 
     const imgTag = document.createElement('img');
     imgTag.src = singlePizza.assets.menu[0].url;
